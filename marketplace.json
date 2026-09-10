@@ -1,0 +1,7 @@
+{
+  "name": "Belfry Plugins",
+  "providerId": "belfry.desktop.plugins",
+  "repository": "ChengSoon/belfry-desktop-plugins",
+  "branch": "main",
+  "featured": ["belfry.quick-notes", "belfry.text-tools", "belfry.review-guide"]
+}

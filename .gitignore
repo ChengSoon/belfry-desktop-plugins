@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+website/node_modules/
+website/.next/
+website/out/
+website/tsconfig.tsbuildinfo
+website/public/catalog.json
+website/public/packages/
+website/public/.nojekyll
+test-results/

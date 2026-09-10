@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "belfry.text-tools",
+  "name": "文本统计",
+  "version": "0.1.0",
+  "description": "为 Agent 提供文本统计工具，计算字符、词语和行数，无需访问文件或网络。",
+  "author": "ChengSoon",
+  "license": "MIT",
+  "main": "main.js",
+  "categories": [
+    "developer-tools"
+  ],
+  "permissions": [
+    "agent.tool.register"
+  ],
+  "engines": {
+    "piDesktop": ">=0.1.0"
+  },
+  "activationEvents": [
+    "onStartup"
+  ],
+  "contributes": {
+    "agentTools": [
+      {
+        "name": "inspect_text",
+        "description": "统计文本字符、词语和行数",
+        "risk": "low",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "text"
+          ]
+        }
+      }
+    ]
+  },
+  "safetyNotes": "仅使用清单声明的 Agent 能力；不访问工作区文件或网络。",
+  "i18n": {
+    "en": {
+      "name": "Text Tools",
+      "description": "Give your agent a text inspection tool for character, word and line counts."
+    }
+  }
+}

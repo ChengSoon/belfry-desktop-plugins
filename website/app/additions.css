@@ -1,0 +1,114 @@
+.plugin-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.search-submit {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hero h1 span {
+  display: inline-block;
+}
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.language-switcher select {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  max-width: 100%;
+}
+.copy-control {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.copy-control input {
+  width: 100%;
+  padding: 10px;
+  color: var(--text);
+  background: var(--surface);
+}
+.market-connect {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.market-connect code {
+  overflow-wrap: anywhere;
+  font:
+    11px/1.7 "JetBrains Mono",
+    monospace;
+  color: var(--text-soft);
+}
+.version-list {
+  margin-top: 32px;
+}
+.version-list summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: 600;
+}
+.version-entry {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.version-entry a {
+  font-size: 13px;
+  margin-left: 14px;
+}
+.package-hash {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--text-faint);
+  font-size: 10px;
+  line-height: 1.6;
+}
+.policy-json {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+.mobile-browse {
+  display: none;
+}
+button {
+  cursor: pointer;
+}
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+@media (max-width: 980px) {
+  .plugin-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .plugin-grid {
+    grid-template-columns: 1fr;
+  }
+  .search-submit {
+    display: block;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .detail-aside {
+    order: initial;
+  }
+  .catalog-result {
+    gap: 16px;
+  }
+  .mobile-browse {
+    display: flex;
+    gap: 18px;
+    margin-top: 16px;
+  }
+}

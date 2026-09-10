@@ -1,0 +1,61 @@
+"""基础面板：保存便笺，内容仅存于插件私有存储。"""
+from html import escape
+
+STYLE = '''
+:root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+body { margin: 0; padding: 28px; background: var(--pi-bg, Canvas); color: var(--pi-fg, CanvasText); }
+main { max-width: 760px; margin: auto; }
+h1 { font-size: 24px; margin: 0 0 12px; }
+p, label { color: var(--pi-muted, GrayText); line-height: 1.6; }
+textarea { box-sizing: border-box; width: 100%; min-height: 240px; resize: vertical;
+  padding: 16px; margin: 10px 0 16px; border: 1px solid GrayText; border-radius: 10px;
+  background: transparent; color: inherit; font: 15px/1.7 inherit; }
+button { border: 0; border-radius: 8px; padding: 10px 20px; background: #147a60;
+  color: white; font: inherit; cursor: pointer; }
+button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible, textarea:focus-visible { outline: 3px solid #36a383; outline-offset: 3px; }
+#status { display: inline-block; margin-left: 12px; }
+'''
+SCRIPT = '''
+const field = document.querySelector("textarea");
+const button = document.querySelector("button");
+const status = document.querySelector("#status");
+let dirty = false;
+async function load() {
+  try {
+    field.value = await window.pluginBridge.invoke("notes.read");
+    field.disabled = false;
+    button.disabled = false;
+    status.textContent = "已加载";
+  } catch (error) { status.textContent = "加载失败：" + error.message; }
+}
+async function save(event) {
+  event.preventDefault();
+  button.disabled = true;
+  const text = field.value;
+  try {
+    await window.pluginBridge.invoke("notes.save", { text });
+    dirty = field.value !== text;
+    status.textContent = dirty ? "有未保存的修改" : "已保存";
+  } catch (error) { status.textContent = "保存失败：" + error.message; }
+  finally { button.disabled = false; }
+}
+field.addEventListener("input", () => { dirty = true; status.textContent = "未保存"; });
+document.querySelector("form").addEventListener("submit", save);
+window.addEventListener("beforeunload", event => { if (dirty) event.preventDefault(); });
+void load();
+'''
+
+
+def panel_source(name):
+    title = escape(name)
+    return f'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title><style>{STYLE}</style></head>
+<body><main><h1>{title}</h1><p>随手记下想法，继续当前工作。</p>
+<form><label for="note">便笺内容</label>
+<textarea id="note" maxlength="8000" disabled placeholder="从这里开始记录…"></textarea>
+<button type="submit" disabled>保存便笺</button><span id="status" role="status">正在加载…</span>
+</form></main><script>{SCRIPT}</script></body></html>
+'''

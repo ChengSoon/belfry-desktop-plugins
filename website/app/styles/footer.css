@@ -1,0 +1,27 @@
+.site-footer {
+  padding: 38px 0;
+  background: var(--surface);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+.footer-brand {
+  font-size: 14px;
+}
+.footer-copy {
+  margin: 10px 0 0;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+.footer-links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+.footer-links .language-switcher {
+  color: var(--text);
+}

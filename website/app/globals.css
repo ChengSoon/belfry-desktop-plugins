@@ -1,0 +1,11 @@
+/* Adapted from vastsa/pi-desktop-plugins (MIT); see ../../NOTICE.md. */
+@import "./styles/foundation.css";
+@import "./styles/navigation.css";
+@import "./styles/hero.css";
+@import "./styles/sections.css";
+@import "./styles/cards.css";
+@import "./styles/discovery.css";
+@import "./styles/catalog.css";
+@import "./styles/detail.css";
+@import "./styles/footer.css";
+@import "./styles/responsive.css";

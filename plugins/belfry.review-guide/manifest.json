@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "belfry.review-guide",
+  "name": "代码审查指南",
+  "version": "0.1.0",
+  "description": "把基于证据的代码审查步骤带入当前会话，覆盖行为、边界和验证。",
+  "author": "ChengSoon",
+  "license": "MIT",
+  "main": "main.js",
+  "categories": [
+    "developer-tools",
+    "community"
+  ],
+  "permissions": [
+    "agent.prompt.inject"
+  ],
+  "engines": {
+    "piDesktop": ">=0.1.0"
+  },
+  "activationEvents": [
+    "onStartup"
+  ],
+  "contributes": {
+    "skills": [
+      "skills/review.md"
+    ]
+  },
+  "safetyNotes": "仅使用清单声明的 Agent 能力；不访问工作区文件或网络。",
+  "i18n": {
+    "en": {
+      "name": "Review Guide",
+      "description": "Bring an evidence-based review workflow into your coding session."
+    }
+  }
+}

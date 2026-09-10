@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "providerId": "belfry.desktop.plugins",
+  "name": "Belfry Plugins",
+  "homepage": "https://github.com/ChengSoon/belfry-desktop-plugins",
+  "updatedAt": "2026-09-10T00:23:16+00:00",
+  "plugins": [
+    {
+      "id": "belfry.quick-notes",
+      "name": "工作便笺",
+      "description": "在插件面板记录工作中的想法，保存到本机，下次打开继续编辑。",
+      "author": "ChengSoon",
+      "categories": [
+        "productivity"
+      ],
+      "repository": "https://github.com/ChengSoon/belfry-desktop-plugins/tree/main/plugins/belfry.quick-notes",
+      "homepage": "https://github.com/ChengSoon/belfry-desktop-plugins",
+      "trust": "community",
+      "readmeMarkdown": "# 工作便笺\n\n在插件面板记录工作中的想法，保存到本机，下次打开继续编辑。\n\n## 使用\n\n安装后点击“打开”，输入便笺并保存。关闭面板或重启插件后，内容仍在。单条便笺最多 8000 个字符。\n\n## 权限\n\nui.panel\n\n数据保存在本机插件设置中；不访问工作区文件或网络。\n\n## 制作自己的版本\n\n使用仓库中的 `scripts/new_plugin.py` 创建独立 ID，再修改页面和入口。\n\n## 许可证\n\nMIT，Copyright 2026 ChengSoon。\n",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishedAt": "2026-09-10T00:23:16+00:00",
+          "url": "packages/belfry.quick-notes-0.1.0.piplug",
+          "shasum": "66e78b84bb575f9cbf4d4b567e7e9af1bae399d7cd7877cbca9bf976d33db588",
+          "sizeBytes": 6519,
+          "permissions": [
+            "ui.panel"
+          ],
+          "changelog": "## 0.1.0\n\nInitial release.\n",
+          "minPiDesktop": "0.1.0"
+        }
+      ],
+      "i18n": {
+        "en": {
+          "name": "Quick Notes",
+          "description": "Keep short notes beside your work. Save locally and pick up where you left off."
+        }
+      },
+      "safetyNotes": "数据保存在本机插件设置中；不访问工作区文件或网络。",
+      "license": "MIT"
+    },
+    {
+      "id": "belfry.review-guide",
+      "name": "代码审查指南",
+      "description": "把基于证据的代码审查步骤带入当前会话，覆盖行为、边界和验证。",
+      "author": "ChengSoon",
+      "categories": [
+        "developer-tools",
+        "community"
+      ],
+      "repository": "https://github.com/ChengSoon/belfry-desktop-plugins/tree/main/plugins/belfry.review-guide",
+      "homepage": "https://github.com/ChengSoon/belfry-desktop-plugins",
+      "trust": "community",
+      "readmeMarkdown": "# 代码审查指南\n\n把基于证据的代码审查步骤带入当前会话，覆盖行为、边界和验证。\n\n## 使用\n\n启用后，当前 Agent 可以读取 review-changes Skill，按其中步骤审查工作区修改。插件只提供指南，不会自动修改代码。\n\n## 权限\n\nagent.prompt.inject\n\n仅使用清单声明的 Agent 能力；不访问工作区文件或网络。\n\n## 制作自己的版本\n\n使用仓库中的 `scripts/new_plugin.py` 创建独立 ID，再修改页面和入口。\n\n## 许可证\n\nMIT，Copyright 2026 ChengSoon。\n",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishedAt": "2026-09-10T00:23:16+00:00",
+          "url": "packages/belfry.review-guide-0.1.0.piplug",
+          "shasum": "ab6e743f7c17251d0a660d0b3df2ffc3f9b054d17109cce487a9f1a6a91c22d8",
+          "sizeBytes": 3707,
+          "permissions": [
+            "agent.prompt.inject"
+          ],
+          "changelog": "## 0.1.0\n\nInitial release.\n",
+          "minPiDesktop": "0.1.0"
+        }
+      ],
+      "i18n": {
+        "en": {
+          "name": "Review Guide",
+          "description": "Bring an evidence-based review workflow into your coding session."
+        }
+      },
+      "safetyNotes": "仅使用清单声明的 Agent 能力；不访问工作区文件或网络。",
+      "license": "MIT"
+    },
+    {
+      "id": "belfry.text-tools",
+      "name": "文本统计",
+      "description": "为 Agent 提供文本统计工具，计算字符、词语和行数，无需访问文件或网络。",
+      "author": "ChengSoon",
+      "categories": [
+        "developer-tools"
+      ],
+      "repository": "https://github.com/ChengSoon/belfry-desktop-plugins/tree/main/plugins/belfry.text-tools",
+      "homepage": "https://github.com/ChengSoon/belfry-desktop-plugins",
+      "trust": "community",
+      "readmeMarkdown": "# 文本统计\n\n为 Agent 提供文本统计工具，计算字符、词语和行数，无需访问文件或网络。\n\n## 使用\n\n启用后，让 Agent 调用 inspect_text，参数为 {\"text\":\"hello world\"}。它会返回 characters、words、lines；words 按空白分隔。\n\n## 权限\n\nagent.tool.register\n\n仅使用清单声明的 Agent 能力；不访问工作区文件或网络。\n\n## 制作自己的版本\n\n使用仓库中的 `scripts/new_plugin.py` 创建独立 ID，再修改页面和入口。\n\n## 许可证\n\nMIT，Copyright 2026 ChengSoon。\n",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishedAt": "2026-09-10T00:23:16+00:00",
+          "url": "packages/belfry.text-tools-0.1.0.piplug",
+          "shasum": "78bf7875decb660485b3b5e16c708ebb08ba194d5c29bab87dcb002dd52183a7",
+          "sizeBytes": 4053,
+          "permissions": [
+            "agent.tool.register"
+          ],
+          "changelog": "## 0.1.0\n\nInitial release.\n",
+          "minPiDesktop": "0.1.0"
+        }
+      ],
+      "i18n": {
+        "en": {
+          "name": "Text Tools",
+          "description": "Give your agent a text inspection tool for character, word and line counts."
+        }
+      },
+      "safetyNotes": "仅使用清单声明的 Agent 能力；不访问工作区文件或网络。",
+      "license": "MIT"
+    }
+  ]
+}

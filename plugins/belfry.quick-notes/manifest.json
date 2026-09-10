@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "belfry.quick-notes",
+  "name": "工作便笺",
+  "version": "0.1.0",
+  "description": "在插件面板记录工作中的想法，保存到本机，下次打开继续编辑。",
+  "author": "ChengSoon",
+  "license": "MIT",
+  "main": "main.js",
+  "categories": [
+    "productivity"
+  ],
+  "permissions": [
+    "ui.panel"
+  ],
+  "engines": {
+    "piDesktop": ">=0.1.0"
+  },
+  "activationEvents": [
+    "onStartup"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "id": "belfry.quick-notes.open",
+        "title": "打开 工作便笺"
+      }
+    ]
+  },
+  "ui": {
+    "panel": "renderer/index.html",
+    "title": "工作便笺"
+  },
+  "safetyNotes": "数据保存在本机插件设置中；不访问工作区文件或网络。",
+  "i18n": {
+    "en": {
+      "name": "Quick Notes",
+      "description": "Keep short notes beside your work. Save locally and pick up where you left off."
+    }
+  }
+}

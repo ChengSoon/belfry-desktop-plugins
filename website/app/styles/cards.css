@@ -1,0 +1,127 @@
+.plugin-card {
+  display: flex;
+  min-height: 300px;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+.plugin-card:hover {
+  border-color: #a9c5e6;
+  box-shadow: 0 12px 32px rgba(22, 35, 54, 0.08);
+  transform: translateY(-2px);
+}
+.plugin-card-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.plugin-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  color: var(--brand-strong);
+  background: var(--brand-soft);
+}
+.plugin-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-faint);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+.verified-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--green);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+.plugin-card-content {
+  flex: 1;
+  padding-top: 24px;
+}
+.plugin-card h3 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.035em;
+}
+.card-title-link:hover h3 {
+  color: var(--brand-strong);
+}
+.plugin-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 9px 0 0;
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 18px;
+}
+.tag {
+  padding: 4px 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-soft);
+  font-size: 11px;
+}
+.plugin-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-top: 18px;
+}
+.permission-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  color: var(--green);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.permission-badge.medium {
+  color: var(--orange);
+}
+.permission-badge.high {
+  color: var(--red);
+}
+.card-size {
+  overflow: hidden;
+  color: var(--text-faint);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-arrow {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-soft);
+}
+.card-arrow:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
