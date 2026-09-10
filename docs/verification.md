@@ -1,4 +1,4 @@
-# 本地交付验证
+# 插件中心验证记录
 
 验证日期：2026-09-10。由主会话直接实现和自审，未委派。
 
@@ -34,10 +34,28 @@ Emoji，重载后仍保留，超限输入被拒绝。四种新建模板均通过
 - 修复复制按钮可访问名称、详情页标题层级、搜索按钮换行和窄屏布局。
 - 不把第三方市场条目、虚构下载量或认证标记作为自有内容。
 
-## 交付边界
+## 公开发布与线上验证
 
-目标仓库 `ChengSoon/belfry-desktop-plugins` 尚未创建，未提交或推送；GitHub Actions 和
-Pages 工作流已准备，但不能声称在线 CI 或部署已经成功。
+2026-09-10 按用户明确授权发布公开仓库 `ChengSoon/belfry-desktop-plugins` 的 `main` 分支，
+初始实现提交 `8931d82`。先完成 Belfry 主项目推送，再发布本独立仓库。
+
+| 检查 | 结果 |
+| --- | --- |
+| [GitHub 校验](https://github.com/ChengSoon/belfry-desktop-plugins/actions/runs/34435138143) | 成功；Python 17 项、包与目录、结构与格式、构建及浏览器 6 项通过 |
+| [GitHub Pages 部署](https://github.com/ChengSoon/belfry-desktop-plugins/actions/runs/34435296505) | build 和 deploy 均成功 |
+| 公开网站 | <https://chengsoon.github.io/belfry-desktop-plugins/>，首页、列表、文档、三个详情页均为 HTTP 200 |
+| GitHub raw 市场 | 实际 Belfry 来源切换入口成功选择 `belfry`，读取三个插件 |
+| 三个线上插件包 | 实际 `PluginMarket.prepare` 下载成功；大小、SHA-256、来源身份一致 |
+| Pages 市场目录 | 与发布的 `catalog.json` 一致 |
+| 已上线网站的 Playwright | 同一组 6 项针对真实 Pages 地址运行，全部通过 |
+| 发布前本地补跑 | Python 17 项、宿主互操作 3 项及两组结构检查通过 |
+
+线上市场验证使用临时配置目录与真实网络请求，没有修改用户真实配置。
+线上浏览器验证使用独立 Chromium，覆盖搜索、分类、语言、实际包下载、复制失败提示和
+手机布局；截图位于本轮临时测试目录。GitHub raw 市场与 Pages 均可公开访问。
+
+## 验证边界
+
 桌面完整程序另已构建独立 QA；Computer Use 连接启动失败，最新桌面窗口复核未完成。
 发布脚本执行基本静态检查，复杂插件仍应按贡献说明在真实宿主中验证业务行为。
 
