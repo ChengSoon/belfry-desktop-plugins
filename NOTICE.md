@@ -12,3 +12,5 @@ Belfry 修改：品牌与真实目录数据、静态导出、GitHub Pages 路径
 Belfry 桌面宿主及其 PI-Desktop 移植不包含在此仓库中，也不因此变更许可证。
 
 本中心独立维护，不代表 PI-Desktop 官方市场。目录不虚构下载量或认证状态。
+
+`belfry.playwriter` 的 Belfry 适配代码沿用 Belfry 桌面仓库的 LGPL-3.0，许可证保留在插件目录；内置 Playwriter 0.11.0 使用 MIT，其他依赖许可证保留在运行组件中。该插件不代表 Playwriter 官方发布。

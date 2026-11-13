@@ -58,15 +58,17 @@ test("catalog downloads every immutable package and the real host loads all cont
   const runtime = await host(t, base);
   await market.refresh();
   assert.equal(catalog.plugins.length, (await market.search()).plugins.length);
+  let expectedTools = 0;
   for (const plugin of catalog.plugins) {
     const prepared = await market.prepare({ id: plugin.id });
     const entry = await unpack(prepared.path, join(base, plugin.id));
     assert.equal(plugin.id, entry.manifest.id);
+    expectedTools += entry.manifest.contributes?.agentTools?.length ?? 0;
     await runtime.call("load", entry);
   }
   const contributions = await runtime.call("catalog");
-  assert.equal(3, contributions.plugins.length);
-  assert.equal(1, contributions.tools.length);
+  assert.equal(catalog.plugins.length, contributions.plugins.length);
+  assert.equal(expectedTools, contributions.tools.length);
   assert.equal(1, contributions.skills.length);
   const result = await runtime.call("tool", { pluginId: "belfry.text-tools", name: "inspect_text", args: { text: "hello 世界\nnext" } });
   assert.deepEqual({ characters: 13, words: 3, lines: 2 }, JSON.parse(result.content[0].text));

@@ -1,0 +1,11 @@
+{
+  "name": "playwriter",
+  "version": "0.11.0",
+  "sha256": "0a526509f64e24343253093305ddeb64cbb400ae772ab572208907ad04cd74d8",
+  "fileCount": 4529,
+  "totalBytes": 46719317,
+  "archiveBytes": 12970756,
+  "source": "https://github.com/remorses/playwriter",
+  "license": "MIT",
+  "optionalNativeDependencies": false
+}
