@@ -43,41 +43,53 @@ export function runtimeZip(files) {
   return Buffer.concat([...locals, index, end]);
 }
 
-export async function extractRuntime(bytes, destination, { signal } = {}) {
+function archiveIndex(bytes) {
   if (bytes.length < 22 || bytes.length > 50 * 1024 * 1024) throw new Error("运行组件包大小无效");
   const end = bytes.length - 22;
   if (bytes.readUInt32LE(end) !== 0x06054b50) throw new Error("运行组件包格式无效");
   const count = bytes.readUInt16LE(end + 10), indexStart = bytes.readUInt32LE(end + 16);
   if (!count || count > 20_000 || indexStart + bytes.readUInt32LE(end + 12) !== end) throw new Error("运行组件包目录无效");
-  let cursor = indexStart, totalBytes = 0;
-  const seen = new Set();
-  for (let i = 0; i < count; i++) {
+  return { end, count, indexStart };
+}
+function archiveEntry(bytes, cursor, { end, indexStart }) {
+  if (cursor + 46 > end || bytes.readUInt32LE(cursor) !== 0x02014b50) throw new Error("运行组件包目录损坏");
+  const length = bytes.readUInt16LE(cursor + 28), size = bytes.readUInt32LE(cursor + 24);
+  const compressedSize = bytes.readUInt32LE(cursor + 20), offset = bytes.readUInt32LE(cursor + 42);
+  const next = cursor + 46 + length + bytes.readUInt16LE(cursor + 30) + bytes.readUInt16LE(cursor + 32);
+  if (next > end || offset + 30 > indexStart) throw new Error("运行组件包条目越界");
+  const name = bytes.subarray(cursor + 46, cursor + 46 + length).toString("utf8");
+  safeName(name);
+  return { name, size, compressedSize, offset, next, cursor, indexStart };
+}
+function entryContents(bytes, entry) {
+  const { offset, cursor, name, size, compressedSize, indexStart } = entry;
+  const localNameLength = bytes.readUInt16LE(offset + 26);
+  const start = offset + 30 + localNameLength + bytes.readUInt16LE(offset + 28);
+  if (bytes.readUInt32LE(offset) !== 0x04034b50 || bytes.readUInt16LE(cursor + 10) !== 8
+    || bytes.readUInt16LE(cursor + 8) !== 0x800 || start + compressedSize > indexStart
+    || bytes.subarray(offset + 30, offset + 30 + localNameLength).toString("utf8") !== name) {
+    throw new Error("运行组件包条目无效");
+  }
+  const body = inflateRawSync(bytes.subarray(start, start + compressedSize), { maxOutputLength: Math.max(1, size) });
+  if (body.length !== size || crc32(body) !== bytes.readUInt32LE(cursor + 16)) throw new Error("运行组件校验失败");
+  return body;
+}
+
+export async function extractRuntime(bytes, destination, { signal } = {}) {
+  const index = archiveIndex(bytes), seen = new Set();
+  let cursor = index.indexStart, totalBytes = 0;
+  for (let i = 0; i < index.count; i++) {
     signal?.throwIfAborted();
-    if (cursor + 46 > end || bytes.readUInt32LE(cursor) !== 0x02014b50) throw new Error("运行组件包目录损坏");
-    const length = bytes.readUInt16LE(cursor + 28), size = bytes.readUInt32LE(cursor + 24);
-    const compressedSize = bytes.readUInt32LE(cursor + 20), offset = bytes.readUInt32LE(cursor + 42);
-    const next = cursor + 46 + length + bytes.readUInt16LE(cursor + 30) + bytes.readUInt16LE(cursor + 32);
-    if (next > end || offset + 30 > indexStart) throw new Error("运行组件包条目越界");
-    const name = bytes.subarray(cursor + 46, cursor + 46 + length).toString("utf8");
-    safeName(name);
-    if (seen.has(name.toLowerCase())) throw new Error("运行组件包包含重复路径");
-    seen.add(name.toLowerCase());
-    totalBytes += size;
-    if (size > 64 * 1024 * 1024 || totalBytes > MAX_BYTES) throw new Error("运行组件解压大小超额");
-    const localNameLength = bytes.readUInt16LE(offset + 26);
-    const start = offset + 30 + localNameLength + bytes.readUInt16LE(offset + 28);
-    if (bytes.readUInt32LE(offset) !== 0x04034b50 || bytes.readUInt16LE(cursor + 10) !== 8
-      || bytes.readUInt16LE(cursor + 8) !== 0x800 || start + compressedSize > indexStart
-      || bytes.subarray(offset + 30, offset + 30 + localNameLength).toString("utf8") !== name) {
-      throw new Error("运行组件包条目无效");
-    }
-    const body = inflateRawSync(bytes.subarray(start, start + compressedSize), { maxOutputLength: Math.max(1, size) });
-    if (body.length !== size || crc32(body) !== bytes.readUInt32LE(cursor + 16)) throw new Error("运行组件校验失败");
-    const target = join(destination, name);
+    const entry = archiveEntry(bytes, cursor, index);
+    if (seen.has(entry.name.toLowerCase())) throw new Error("运行组件包包含重复路径");
+    seen.add(entry.name.toLowerCase());
+    totalBytes += entry.size;
+    if (entry.size > 64 * 1024 * 1024 || totalBytes > MAX_BYTES) throw new Error("运行组件解压大小超额");
+    const body = entryContents(bytes, entry), target = join(destination, entry.name);
     await mkdir(dirname(target), { recursive: true });
     await writeFile(target, body, { flag: "wx", mode: 0o600 });
-    cursor = next;
+    cursor = entry.next;
   }
-  if (cursor !== end) throw new Error("运行组件包目录长度不一致");
-  return { fileCount: count, totalBytes };
+  if (cursor !== index.end) throw new Error("运行组件包目录长度不一致");
+  return { fileCount: index.count, totalBytes };
 }

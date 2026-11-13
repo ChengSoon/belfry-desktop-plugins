@@ -5,12 +5,16 @@ import { pathToFileURL } from "node:url";
 import { extractRuntime } from "./runtime-archive.mjs";
 
 export const ENGINE_VERSION = "0.11.0";
-export async function prepareRuntime(dataPath, { signal, vendor = new URL("./vendor/", import.meta.url) } = {}) {
-  if (Number(process.versions.node.split(".")[0]) < 22) throw new Error("Playwriter 需要 Node.js 22 或更新版本，请在 Belfry 中切换 Node.js 后重试。");
+async function readMetadata(vendor) {
   let metadata;
   try { metadata = JSON.parse(await readFile(new URL("runtime.json", vendor), "utf8")); }
   catch { throw new Error("缺少 Playwriter 运行组件，请安装完整插件包；源码开发请先执行 node scripts/build-playwriter-plugin.mjs。"); }
   if (metadata.version !== ENGINE_VERSION || !/^[a-f0-9]{64}$/.test(metadata.sha256)) throw new Error("运行组件版本无效");
+  return metadata;
+}
+export async function prepareRuntime(dataPath, { signal, vendor = new URL("./vendor/", import.meta.url) } = {}) {
+  if (Number(process.versions.node.split(".")[0]) < 22) throw new Error("Playwriter 需要 Node.js 22 或更新版本，请在 Belfry 中切换 Node.js 后重试。");
+  const metadata = await readMetadata(vendor);
   const base = join(dataPath, "runtime"), target = join(base, `${ENGINE_VERSION}-${metadata.sha256.slice(0, 16)}`);
   const entry = join(target, "node_modules/playwriter/dist/executor.js");
   const ready = async () => (await readFile(join(target, ".ready"), "utf8").catch(() => "")) === metadata.sha256

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "belfry.playwriter",
   "name": "Playwriter 浏览器助手",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "让 Belfry 中的 Agent 操作已登录的 Chrome：读取网页、点击、填表和截图。基于 Playwriter，内置运行组件。",
   "author": "Belfry",
   "main": "main.mjs",

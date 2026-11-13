@@ -2,15 +2,23 @@ const $ = id => document.getElementById(id);
 let refreshing = false, testing = false;
 const invoke = channel => window.pluginBridge.invoke(channel);
 function notice(message, error = false) { $("notice").hidden = !message; $("notice").textContent = message; $("notice").classList.toggle("error", error); }
+function badgeLabel(status, connected) {
+  if (status.phase === "error") return "连接异常";
+  if (connected) return "已连接";
+  return status.phase === "preparing" ? "准备组件中" : "等待浏览器";
+}
+function statusMessage(status, connected) {
+  if (status.phase === "error") return status.lastError;
+  if (connected) return "浏览器已连接，可以测试连接或在 Belfry 的 Agent 中开始任务。";
+  if (status.phase === "preparing") return "正在准备内置运行组件，首次使用需要稍等片刻。";
+  return "本地服务就绪。请在 Chrome 中点击 Playwriter 扩展图标，连接需要操作的网页。";
+}
 function render(status) {
   const connected = status.extensions.length > 0, ready = status.phase === "ready" && status.relayRunning;
   const state = status.phase === "error" ? "error" : connected ? "connected" : "waiting";
   $("badge").dataset.state = state;
-  $("badge").textContent = state === "error" ? "连接异常" : connected ? "已连接" : status.phase === "preparing" ? "准备组件中" : "等待浏览器";
-  $("status-message").textContent = state === "error" ? status.lastError : connected
-    ? "浏览器已连接，可以测试连接或在 Belfry 的 Agent 中开始任务。"
-    : status.phase === "preparing" ? "正在准备内置运行组件，首次使用需要稍等片刻。"
-    : "本地服务就绪。请在 Chrome 中点击 Playwriter 扩展图标，连接需要操作的网页。";
+  $("badge").textContent = badgeLabel(status, connected);
+  $("status-message").textContent = statusMessage(status, connected);
   $("engine").textContent = `Playwriter ${status.engineVersion}`;
   $("relay").textContent = ready ? "已启动" : status.phase === "preparing" ? "准备中" : "未启动";
   $("browsers").textContent = String(status.extensions.length);

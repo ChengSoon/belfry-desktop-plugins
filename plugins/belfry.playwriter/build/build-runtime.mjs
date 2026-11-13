@@ -11,6 +11,13 @@ const plugin = fileURLToPath(new URL("../", import.meta.url));
 const supplied = process.argv.indexOf("--from");
 const temporary = supplied < 0 ? await mkdtemp(join(tmpdir(), "belfry-playwriter-build-")) : null;
 const source = temporary ?? resolve(process.argv[supplied + 1]);
+function skipEntry(entry, name, optional) {
+  return entry.isSymbolicLink() || [".bin", ".cache", "@img", "sharp"].includes(entry.name) || optional.has(name);
+}
+function includeFile(entry, name) {
+  return entry.isFile() && !/\.(?:map|ts)$/.test(name) && !/\.(?:test|spec)\.[cm]?js$/.test(name)
+    && !name.includes("/__snapshots__/") && entry.name !== ".package-lock.json";
+}
 try {
   if (temporary) {
     await cp(join(plugin, "build/package.json"), join(source, "package.json"));
@@ -29,10 +36,9 @@ try {
   async function visit(relative) {
     for (const entry of await readdir(join(source, relative), { withFileTypes: true })) {
       const name = `${relative}/${entry.name}`;
-      if (entry.isSymbolicLink() || [".bin", ".cache", "@img", "sharp"].includes(entry.name) || optional.has(name)) continue;
+      if (skipEntry(entry, name, optional)) continue;
       if (entry.isDirectory()) await visit(name);
-      else if (entry.isFile() && !/\.(?:map|ts)$/.test(name) && !/\.(?:test|spec)\.[cm]?js$/.test(name)
-        && !name.includes("/__snapshots__/") && entry.name !== ".package-lock.json") files.set(name, await readFile(join(source, name)));
+      else if (includeFile(entry, name)) files.set(name, await readFile(join(source, name)));
     }
   }
   await visit("node_modules");
